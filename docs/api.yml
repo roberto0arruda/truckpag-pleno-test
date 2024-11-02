@@ -1,6 +1,73 @@
 openapi: 3.0.1
 info:
-  title: DotNet Challenge 20200902
-  description: CRUD Products
+  title: PHP Challenge 20230105
+  description: API Products
   version: '0.1'
+servers:
+  - url: http://localhost
+    description: Local
+paths:
+  /products:
+    get:
+      summary: List all products
+      description: Returns all products from the store
+      operationId: listProducts
+      responses:
+        '200':
+          description: A array of products
+          content:
+            application/json:
+              schema:
+                type: array
 
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        code:
+          type: integer
+        status:
+          type: string
+        imported_t:
+          type: string
+        url:
+          type: string
+        creator:
+          type: string
+        created_t:
+          type: integer
+        last_modified_t:
+          type: integer
+        product_name:
+          type: string
+        quantity:
+          type: string
+        brands:
+          type: string
+        categories:
+          type: string
+        labels:
+          type: string
+        cities:
+          type: string
+        purchase_places:
+          type: string
+        stores:
+          type: string
+        ingredients_text:
+          type: string
+        traces:
+          type: string
+        serving_size:
+          type: string
+        serving_quantity:
+          type: number
+        nutriscore_score:
+          type: integer
+        nutriscore_grade:
+          type: string
+        main_category:
+          type: string
+        image_url:
+          type: string
