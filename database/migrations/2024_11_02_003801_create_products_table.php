@@ -18,8 +18,8 @@ return new class extends Migration
             $table->timestamp('imported_t')->nullable();
             $table->string('url');
             $table->string('creator');
-            $table->bigInteger('created_t');
-            $table->bigInteger('last_modified_t');
+            $table->unsignedInteger('created_t');
+            $table->unsignedInteger('last_modified_t');
             $table->string('product_name');
             $table->string('quantity');
             $table->string('brands');
