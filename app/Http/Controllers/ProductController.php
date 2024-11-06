@@ -56,6 +56,10 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        $product->status = 'trash';
+
+        $product->save();
+
+        return response()->noContent();
     }
 }

@@ -21,7 +21,7 @@ class ProductControllerTest extends TestCase
         $response->assertJsonCount(15, 'data');
     }
 
-    public function test_pagination_returns_correct_number_of_items_per_page()
+    public function test_pagination_returns_correct_number_of_items_per_page(): void
     {
         Product::factory()->count(30)->create();
 
@@ -39,7 +39,7 @@ class ProductControllerTest extends TestCase
         ]);
     }
 
-    public function test_pagination_navigates_correctly_between_pages()
+    public function test_pagination_navigates_correctly_between_pages(): void
     {
         Product::factory()->count(25)->create();
 
@@ -74,5 +74,22 @@ class ProductControllerTest extends TestCase
             'product_name' => $product->product_name,
             'code' => $product->code,
         ]);
+    }
+
+    public function test_product_can_be_deleted(): void
+    {
+        $product = Product::factory()->create([
+            'status' => 'published'
+        ]);
+
+        $this->assertEquals('published', $product->status);
+
+        $response = $this->deleteJson("/products/{$product->code}");
+
+        $response->assertStatus(204);
+
+        $fromDatabase = Product::find($product->id);
+
+        $this->assertEquals('trash', $fromDatabase->status);
     }
 }
