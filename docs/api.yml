@@ -12,6 +12,17 @@ paths:
       summary: List all products
       description: Returns all products from the store
       operationId: listProducts
+      parameters:
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          required: false
+        - in: query
+          name: page
+          schema:
+            type: integer
+          required: false
       responses:
         '200':
           description: A array of products
