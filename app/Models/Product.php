@@ -8,8 +8,8 @@ use Illuminate\Support\Carbon;
 
 class Product extends Model
 {
-    protected $casts = [
-        'serving_quantity' => 'float',
+    protected $fillable = [
+        'code'
     ];
 
     protected function importedT(): Attribute

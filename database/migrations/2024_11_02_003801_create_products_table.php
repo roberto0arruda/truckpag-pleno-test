@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->integer('code')->unique();
+            $table->string('code')->unique();
             $table->enum('status', ['draft', 'trash', 'published']);
-            $table->timestamp('imported_t')->nullable();
+            $table->timestampTz('imported_t')->nullable();
             $table->string('url');
             $table->string('creator');
             $table->unsignedInteger('created_t');
@@ -31,8 +31,8 @@ return new class extends Migration
             $table->text('ingredients_text');
             $table->string('traces');
             $table->string('serving_size');
-            $table->decimal('serving_quantity');
-            $table->integer('nutriscore_score');
+            $table->string('serving_quantity');
+            $table->string('nutriscore_score');
             $table->string('nutriscore_grade');
             $table->string('main_category');
             $table->string('image_url');

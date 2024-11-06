@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\ImportProduct;
+use Illuminate\Bus\Batchable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Http;
@@ -10,7 +11,7 @@ use Illuminate\Support\Facades\Storage;
 
 class DownloadFoodFileJob implements ShouldQueue
 {
-    use Queueable;
+    use Batchable, Queueable;
 
     public int $timeout = 60;
 
@@ -28,12 +29,11 @@ class DownloadFoodFileJob implements ShouldQueue
      */
     public function handle(): void
     {
+        // $response = Http::get('https://static.openfoodfacts.org/data/delta/' . $this->importProduct->filename);
         $response = Http::get('https://challenges.coode.sh/food/data/json/' . $this->importProduct->filename);
 
         $contents = $response->body();
-
-        Storage::disk("local")
-            ->put('import/' . basename($this->importProduct->filename, '.gz'), gzdecode($contents));
+        Storage::disk('local')->put('import/' . $this->importProduct->filename, $contents);
 
         $this->importProduct->update([
             'status' => 'downloaded',
