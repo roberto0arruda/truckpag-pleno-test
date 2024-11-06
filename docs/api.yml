@@ -7,9 +7,44 @@ servers:
   - url: http://localhost
     description: Local
 paths:
+  /products/{code}:
+    delete:
+      summary: Change status of product to trash on database
+      description: Delete product by code
+      operationId: deleteProduct
+      parameters:
+        - in: path
+          name: code
+          schema:
+            type: integer
+          required: true
+      responses:
+        '204':
+          description: Product deleted
+        '404':
+          description: Product not found
+    get:
+      summary: Get information of only a product from database
+      description: Get product by code
+      operationId: getProduct
+      parameters:
+        - in: path
+          name: code
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: A product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Product not found
   /products:
     get:
-      summary: List all products
+      summary: List all products in database with pagination
       description: Returns all products from the store
       operationId: listProducts
       parameters:
@@ -30,7 +65,6 @@ paths:
             application/json:
               schema:
                 type: array
-
 components:
   schemas:
     Product:
