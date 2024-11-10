@@ -12,7 +12,17 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = [
-        'code'
+        'status',
+        'product_name',
+        'quantity',
+        'brands',
+        'categories',
+        'labels',
+        'cities',
+        'purchase_places',
+        'stores',
+        'ingredients_text',
+        'traces',
     ];
 
     protected function importedT(): Attribute

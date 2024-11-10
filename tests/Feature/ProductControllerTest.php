@@ -92,4 +92,39 @@ class ProductControllerTest extends TestCase
 
         $this->assertEquals('trash', $fromDatabase->status);
     }
+
+    public function test_product_can_be_updated(): void
+    {
+        $product = Product::factory()->create([
+            'status' => 'draft'
+        ]);
+
+        $response = $this->putJson("/products/{$product->code}", [
+            'status' => 'published',
+            'product_name' => 'new name',
+            'quantity' => '380 g (6 x 2 u.)'
+        ]);
+
+        $response->assertStatus(200);
+
+        $this->assertDatabaseHas('products', [
+            'id' => $product->id,
+            'status' => 'published',
+            'product_name' => 'new name',
+            'quantity' => '380 g (6 x 2 u.)',
+        ]);
+    }
+
+    public function test_product_cannot_be_updated_if_not_published(): void
+    {
+        $product = Product::factory()->create();
+
+        $response = $this->putJson("/products/{$product->code}", [
+            'status' => 'error',
+            'product_name' => 'new name'
+        ]);
+
+        $response->assertStatus(422)
+            ->assertJsonValidationErrorFor('status');
+    }
 }
