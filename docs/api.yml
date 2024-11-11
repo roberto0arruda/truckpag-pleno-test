@@ -8,6 +8,31 @@ servers:
     description: Local
 paths:
   /products/{code}:
+    put:
+      summary: Change information of product on database
+      description: Update product by code
+      operationId: updateProduct
+      parameters:
+        - in: path
+          name: code
+          schema:
+            type: integer
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductUpdate'
+      responses:
+        '200':
+          description: Product updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Product not found
     delete:
       summary: Change status of product to trash on database
       description: Delete product by code
@@ -115,4 +140,25 @@ components:
         main_category:
           type: string
         image_url:
+          type: string
+    ProductUpdate:
+      type: object
+      properties:
+        status:
+          type: string
+        product_name:
+          type: string
+        quantity:
+          type: string
+        brands:
+          type: string
+        categories:
+          type: string
+        labels:
+          type: string
+        cities:
+          type: string
+        purchase_places:
+          type: string
+        stores:
           type: string
