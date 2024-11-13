@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -47,5 +50,35 @@ class ProductController extends Controller
         $product->save();
 
         return response()->noContent();
+    }
+
+    public function status(): \Illuminate\Http\JsonResponse
+    {
+        $databaseConnection = $this->checkDatabaseConnection();
+
+        $lastCronRun = Cache::get('last_cron_run', 'cron do not executed');
+
+        $serverStartTime = Cache::get('server_start_time', now());
+        $uptime = Carbon::parse($serverStartTime)->diffForHumans();
+
+        $memoryUsage = round(memory_get_usage() / 1024 / 1024, 2) . ' MB';
+
+        return response()->json([
+            'api_status' => 'online',
+            'database_connection' => $databaseConnection,
+            'last_cron_run' => $lastCronRun,
+            'uptime' => $uptime,
+            'memory_usage' => $memoryUsage,
+        ]);
+    }
+
+    private function checkDatabaseConnection(): ?string
+    {
+        try {
+            DB::connection()->getPdo();
+            return 'OK';
+        } catch (\Exception $e) {
+            return 'Err connection: ' . $e->getMessage();
+        }
     }
 }
