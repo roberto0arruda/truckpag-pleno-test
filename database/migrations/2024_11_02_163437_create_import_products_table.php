@@ -13,8 +13,8 @@ return new class extends Migration {
         Schema::create('import_products', function (Blueprint $table) {
             $table->id();
             $table->string('filename');
-            $table->enum('status', ['downloading', 'downloaded', 'importing', 'imported'])
-                ->default('downloading');
+            $table->enum('status', ['pending', 'downloaded', 'importing', 'imported'])
+                ->default('pending');
             $table->timestamps();
         });
     }

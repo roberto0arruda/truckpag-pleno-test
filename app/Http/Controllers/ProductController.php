@@ -58,7 +58,7 @@ class ProductController extends Controller
 
         $lastCronRun = Cache::get('last_cron_run', 'cron do not executed');
 
-        $serverStartTime = Cache::get('server_start_time', now());
+        $serverStartTime = Cache::store('file')->rememberForever('server_start_time', fn() => now());
         $uptime = Carbon::parse($serverStartTime)->diffForHumans();
 
         $memoryUsage = round(memory_get_usage() / 1024 / 1024, 2) . ' MB';
